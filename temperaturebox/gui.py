@@ -45,20 +45,21 @@ def extract_i(event):
 def get_instrument(port, address):
     instrument = minimalmodbus.Instrument(port, address)
     instrument.close_port_after_each_call = True
+    return instrument
     # place more details here such as baud rate and parity    
 
 
 def read_sv_pv(port, address):
-    # instrument = get_instrument(port, address)
-    # sv = instrument.read_register(0, 1)
-    # pv = instrument.read_register(1, 1)
-    # return sv, pv
-    return int(time.time())%100, int(time.time())%100
+    instrument = get_instrument(port, address)
+    sv = instrument.read_register(0, 0, signed=True)/10.
+    pv = instrument.read_register(1, 0, signed=True)/10.
+    return sv, pv
+
 
 
 def set_sv(value, port, address):
-    # instrument = get_instrument(port, address)
-    # instrument.write_register(0, value, 1)
+    instrument = get_instrument(port, address)
+    instrument.write_register(0, value, 1, signed=True)
     return True
 
 
