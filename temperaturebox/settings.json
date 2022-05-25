@@ -1,0 +1,92 @@
+{
+    "boxes": [
+        {
+            "address": 1,
+            "name": "Box 1",
+            "port": "COM6",
+            "protocol": [
+                {
+                    "step": 1,
+                    "temperature": 30.0,
+                    "time": 12.0
+                },
+                {
+                    "step": 2,
+                    "temperature": 30.0,
+                    "time": 12.0
+                }
+            ],
+            "state": {
+                "basename": "teertsdf",
+                "current_step": 1,
+                "filepath": "./data\\teertsdf.csv",
+                "pv": 90,
+                "start_timestamp": 1653443590.6123862,
+                "status": "running",
+                "step_start_timestamp": 1653443590.6131616,
+                "sv": 90,
+                "time_elapsed": 0.0007753372192382812,
+                "timestamp": 1653443590.6131616
+            }
+        },
+        {
+            "address": 2,
+            "name": "Box 2",
+            "port": "COM7",
+            "protocol": [
+                {
+                    "step": 1,
+                    "temperature": 12.0,
+                    "time": 12.0
+                },
+                {
+                    "step": 2,
+                    "temperature": 12.0,
+                    "time": 12.0
+                }
+            ],
+            "state": {
+                "basename": "123213",
+                "current_step": 1,
+                "filepath": "./data\\123213.csv",
+                "pv": 97,
+                "start_timestamp": 1653443597.685593,
+                "status": "running",
+                "step_start_timestamp": 1653443597.686876,
+                "sv": 97,
+                "time_elapsed": 0.0012831687927246094,
+                "timestamp": 1653443597.686876
+            }
+        },
+        {
+            "address": 3,
+            "name": "Box 3",
+            "port": "COM8",
+            "protocol": [],
+            "state": {
+                "status": "unknown"
+            }
+        },
+        {
+            "address": 4,
+            "name": "Box 4",
+            "port": "COM9",
+            "protocol": [],
+            "state": {
+                "status": "unknown"
+            }
+        },
+        {
+            "address": 5,
+            "name": "Box 5",
+            "port": "COM10",
+            "protocol": [],
+            "state": {
+                "status": "unknown"
+            }
+        }
+    ],
+    "data_directory": "./data",
+    "read_delta": 60,
+    "sleep": 1
+}

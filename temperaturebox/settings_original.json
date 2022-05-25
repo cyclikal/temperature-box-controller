@@ -1,0 +1,41 @@
+{
+    "data_directory":"./data",
+    "read_delta":60,
+    "boxes": [
+        {
+            "address": 1,
+            "port": "COM6",
+            "name": "Box 1",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        },
+        {
+            "address": 2,
+            "port": "COM7",
+            "name": "Box 2",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        },
+        {
+            "address": 3,
+            "port": "COM8",
+            "name": "Box 3",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        },
+        {
+            "address": 4,
+            "port": "COM9",
+            "name": "Box 4",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        },
+        {
+            "address": 5,
+            "port": "COM10",
+            "name": "Box 5",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        }
+    ]
+}
