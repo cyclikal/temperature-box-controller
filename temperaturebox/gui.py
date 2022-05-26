@@ -27,6 +27,54 @@ def threadwrap(threadfunc):
 #    'b': threading.Thread(target=wrapper(b), name='b')
 #}
 
+# errors to catch in thread
+'''
+Traceback (most recent call last):
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 367, in <module>
+    main()
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 360, in main
+    my_client.run()
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 344, in run
+    self.check(event)
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 95, in check
+    sv, pv = read_sv_pv(box['port'], box['address'])
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 53, in read_sv_pv
+    instrument = get_instrument(port, address)
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 46, in get_instrument
+    instrument = minimalmodbus.Instrument(port, address)
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\minimalmodbus.py", line 220, in __init__
+    self.serial = _serialports[port] = serial.Serial(
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\serial\serialwin32.py", line 33, in __init__
+    super(Serial, self).__init__(*args, **kwargs)
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\serial\serialutil.py", line 244, in __init__
+    self.open()
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\serial\serialwin32.py", line 64, in open
+    raise SerialException("could not open port {!r}: {!r}".format(self.portstr, ctypes.WinError()))
+serial.serialutil.SerialException: could not open port 'COM7': FileNotFoundError(2, 'The system cannot find the file specified.', None, 2)
+
+
+
+Exception in thread Thread-1 (update_boxes):
+Traceback (most recent call last):
+  File "c:\Program Files\Python310\lib\threading.py", line 1009, in _bootstrap_inner
+    self.run()
+  File "c:\Program Files\Python310\lib\threading.py", line 946, in run
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 255, in update_datapoint
+    sv, pv = read_sv_pv(box['port'], box['address'])
+  File "C:\Users\cyclikal\repos\temperature-box-controller\temperaturebox\gui.py", line 70, in read_sv_pv
+    sv = instrument.read_register(0, 0, signed=True)/10.
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\minimalmodbus.py", line 480, in read_register
+    returnvalue = self._generic_command(
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\minimalmodbus.py", line 1245, in _generic_command
+    payload_from_slave = self._perform_command(functioncode, payload_to_slave)
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\minimalmodbus.py", line 1322, in _perform_command
+    response_bytes = self._communicate(request_bytes, number_of_bytes_to_read)
+  File "C:\Users\cyclikal\repos\venv\lib\site-packages\minimalmodbus.py", line 1490, in _communicate
+    raise NoResponseError("No communication with the instrument (no answer)")
+minimalmodbus.NoResponseError: No communication with the instrument (no answer)
+'''
+
+
 def serial_ports():
     """ Lists serial port names
 
