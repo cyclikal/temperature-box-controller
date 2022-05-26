@@ -3,59 +3,45 @@
         {
             "address": 1,
             "name": "Box 1",
-            "port": "COM6",
+            "port": "COM7",
             "protocol": [
                 {
                     "step": 1,
-                    "temperature": 30.0,
-                    "time": 12.0
-                },
-                {
-                    "step": 2,
-                    "temperature": 30.0,
-                    "time": 12.0
+                    "temperature": 40.0,
+                    "time": 999.0
                 }
             ],
             "state": {
-                "basename": "teertsdf",
+                "basename": "2022-05-25-test-02",
                 "current_step": 1,
-                "filepath": "./data\\teertsdf.csv",
-                "pv": 90,
-                "start_timestamp": 1653443590.6123862,
+                "filepath": "./data\\2022-05-25-test-02.csv",
+                "pv": 30.0,
+                "start_timestamp": 1653507299.040782,
                 "status": "running",
-                "step_start_timestamp": 1653443590.6131616,
-                "sv": 90,
-                "time_elapsed": 0.0007753372192382812,
-                "timestamp": 1653443590.6131616
+                "step_start_timestamp": 1653507299.056338,
+                "sv": 30.0,
+                "time_elapsed": 65781.19541978836,
+                "timestamp": 1653573080.2362018
             }
         },
         {
             "address": 2,
             "name": "Box 2",
-            "port": "COM7",
+            "port": "COM11",
             "protocol": [
                 {
                     "step": 1,
-                    "temperature": 12.0,
-                    "time": 12.0
+                    "temperature": 60.0,
+                    "time": 24.0
                 },
                 {
                     "step": 2,
-                    "temperature": 12.0,
+                    "temperature": 40.0,
                     "time": 12.0
                 }
             ],
             "state": {
-                "basename": "123213",
-                "current_step": 1,
-                "filepath": "./data\\123213.csv",
-                "pv": 97,
-                "start_timestamp": 1653443597.685593,
-                "status": "running",
-                "step_start_timestamp": 1653443597.686876,
-                "sv": 97,
-                "time_elapsed": 0.0012831687927246094,
-                "timestamp": 1653443597.686876
+                "status": "unknown"
             }
         },
         {
@@ -79,7 +65,7 @@
         {
             "address": 5,
             "name": "Box 5",
-            "port": "COM10",
+            "port": "COM6",
             "protocol": [],
             "state": {
                 "status": "unknown"
@@ -88,5 +74,5 @@
     ],
     "data_directory": "./data",
     "read_delta": 60,
-    "sleep": 1
+    "sleep": 1.0
 }
