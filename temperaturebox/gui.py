@@ -10,6 +10,22 @@ import PySimpleGUI as sg
 import serial
 import minimalmodbus
 
+# to be used later
+def threadwrap(threadfunc):
+    def wrapper():
+        while True:
+            try:
+                threadfunc()
+            except BaseException as e:
+                print('{!r}; restarting thread'.format(e))
+            else:
+                print('exited normally, bad thread; restarting')
+    return wrapper
+
+#thread_dict = {
+#    'a': threading.Thread(target=wrapper(a), name='a'),
+#    'b': threading.Thread(target=wrapper(b), name='b')
+#}
 
 def serial_ports():
     """ Lists serial port names
@@ -90,10 +106,15 @@ class Client(object):
         Args:
             event (str): Event triggering the check, contains the box index
         """
-        i = extract_i(event)
-        box = self.settings['boxes'][i]
-        sv, pv = read_sv_pv(box['port'], box['address'])
-        self.window[f'checktext-{i}'].update(f'SV: {sv}\nPV: {pv}')
+        try:
+            i = extract_i(event)
+            box = self.settings['boxes'][i]
+            print(f'checking box {i+1} on port {box["port"]} address {box["address"]}')
+            sv, pv = read_sv_pv(box['port'], box['address'])
+            self.window[f'checktext-{i}'].update(f'SV: {sv}\nPV: {pv}')
+        except:
+            print('error on check')
+            self.window[f'checktext-{i}'].update(f'SV: None\nPV: None')
 
 
     def gen_protocol_list(self, ibox:int) -> list:
@@ -123,6 +144,16 @@ class Client(object):
         box['protocol'].append({'time':time, 'temperature':temperature, 'step':len(box['protocol'])+1})
         self.window[f'protocol-{i}'].update(self.gen_protocol_list(i))
 
+
+    def update_port(self, event, values):
+        i = extract_i(event)
+        box = self.settings['boxes'][i]
+        box['port'] = values[event]
+
+    def update_address(self, event, values):
+        i = extract_i(event)
+        box = self.settings['boxes'][i]
+        box['address'] = values[event]
 
     def clear_protocol(self, event:str) -> None:
         """Clear the protocol of a box
@@ -284,8 +315,8 @@ PV: {pv:.2f}
                                [
                                     sg.Column(
                                         [
-                                            [sg.Combo(self.ports, default_value=box['port'], key=f'port-{i}', size=(10,None), expand_x=True)],
-                                            [sg.Combo(list(range(1,25)), default_value=box['address'], key=f'address-{i}',expand_x=True)],
+                                            [sg.Combo(self.ports, enable_events=True, default_value=box['port'], key=f'port-{i}', size=(10,None), expand_x=True)],
+                                            [sg.Combo(list(range(1,25)), enable_events=True, default_value=box['address'], key=f'address-{i}',expand_x=True)],
                                             [sg.Button('Check', key=f'check-{i}', expand_x=True)]
                                         ]),
                                     sg.Text('SV:\nPV:', key=f'checktext-{i}', font='courier 10', size=(7,None))
@@ -334,6 +365,10 @@ PV: {pv:.2f}
             if event:
                 if event.startswith('add-'):
                     self.add_protocol_step(event, values)
+                elif event.startswith('port-'):
+                    self.update_port(event, values)
+                elif event.startswith('address-'):
+                    self.update_address(event, values)
                 elif event.startswith('clear-'):
                     self.clear_protocol(event)
                 elif event.startswith('start-'):
