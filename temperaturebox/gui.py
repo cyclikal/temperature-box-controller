@@ -360,30 +360,34 @@ PV: {pv:.2f}
 
         while True:
             for i,box in enumerate(self.settings['boxes']):
-                if box['state']['status'] == 'starting':
-                    start(box)
+                try:
+                    if box['state']['status'] == 'starting':
+                        start(box)
 
-                if box['state']['status'] == 'running':
-                    stamp = time.time()
-                    if stamp - box['state']['timestamp'] > self.settings['read_delta']:
-                        update_datapoint(box)
-                        write_datapoint(box)
-                        update_status_gui(box)
+                    if box['state']['status'] == 'running':
+                        stamp = time.time()
+                        if stamp - box['state']['timestamp'] > self.settings['read_delta']:
+                            update_datapoint(box)
+                            write_datapoint(box)
+                            update_status_gui(box)
 
-                    # Check to move on to next step
-                    if stamp - box['state']['step_start_timestamp'] > box['protocol'][box['state']['current_step']-1]['time']*3600:
-                        box['state']['current_step'] += 1
+                        # Check to move on to next step
+                        if stamp - box['state']['step_start_timestamp'] > box['protocol'][box['state']['current_step']-1]['time']*3600:
+                            box['state']['current_step'] += 1
 
-                        # There are no more steps, change status to done
-                        if box['state']['current_step'] > len(box['protocol']):
-                            box['state']['status'] = 'done'
-                            self.window.write_event_value(f'update-{i}', 'Status: done')
+                            # There are no more steps, change status to done
+                            if box['state']['current_step'] > len(box['protocol']):
+                                box['state']['status'] = 'done'
+                                self.window.write_event_value(f'update-{i}', 'Status: done')
 
-                        # There are more steps, start a new step
-                        else:
-                            start_step(box, box['state']['current_step']-1)
-            
-            time.sleep(self.settings['sleep'])
+                            # There are more steps, start a new step
+                            else:
+                                start_step(box, box['state']['current_step']-1)
+                
+                except Exception as e:
+                    print('Error in update loop '+str(e))
+
+                time.sleep(self.settings['sleep'])
 
     def make_window(self) -> sg.Window:
         self.layout = []
