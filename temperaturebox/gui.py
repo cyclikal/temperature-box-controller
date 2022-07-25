@@ -428,7 +428,7 @@ PV: {pv:.2f}
                                 [
                                     sg.Column(
                                         [
-                                            [sg.Input(box['state'].get('basename',''), tooltip='Filename', key=f'filename-{i}', size=(15,None), expand_x=True)],
+                                            [sg.Input(box['state'].get('basename',''), tooltip='Filename', key=f'filename-{i}', size=(35,None), expand_x=True)],
                                             [sg.Button('Start', key=f'start-{i}'), sg.Button('Stop', key=f'stop-{i}')]
                                         ]
                                     ),
