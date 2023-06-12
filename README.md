@@ -27,6 +27,8 @@ This gui provides a simple way to designate temperatures and amounts of time for
 3. Pull requests are welcomed in seperate branches. For major changes or ideas, please open an issue to discuss what you would like changed!
 
 # Licensing
+MIT License
+
 Copyright (c) 2022 Cyclikal, LLC
 
 
