@@ -1,3 +1,4 @@
+#Standard Library Imports 
 import glob
 import json
 import os
@@ -6,11 +7,14 @@ import sys
 import threading 
 import time
 
+# import for GUI implementation
 import PySimpleGUI as sg
+
+# Imports for connecting to Novus
 import serial
 import minimalmodbus
 
-# to be used later
+# This is never used, can we delete?
 def threadwrap(threadfunc):
     def wrapper():
         while True:
@@ -108,6 +112,9 @@ def threadwrap(threadfunc):
 #'''
 #
 
+### def Serial_ports()
+### no preconditions 
+### finds the possible serial ports on the system and brute forces them
 def serial_ports():
     """ Lists serial port names
 
@@ -126,7 +133,10 @@ def serial_ports():
     else:
         raise EnvironmentError('Unsupported platform')
 
+    # list of ports 
     result = []
+
+    #brute forcing ports
     for port in ports:
         try:
             s = serial.Serial(port)
@@ -139,13 +149,23 @@ def serial_ports():
 def extract_i(event):
     return int(re.match('\w+-([0-9]+)', event).groups()[0])
 
+### Def get_instrument(port, address) -> instrument object 
+### port: string with valid port name 
+### address: 1 <= x <= 256
+### given a port and address, connects to the sought Novus 
 def get_instrument(port, address):
     instrument = minimalmodbus.Instrument(port, address)
     instrument.close_port_after_each_call = True
+    instrument.serial.baudrate = 9600
+    instrument.serial.parity = minimalmodbus.serial.PARITY_NONE
+    instrument.serial.bytesize = minimalmodbus.serial.EIGHTBITS
+    instrument.serial.stopbits = minimalmodbus.serial.STOPBITS_ONE
     return instrument
-    # place more details here such as baud rate and parity    
 
-
+### def read_sv_port(port, address) -> tuple 
+### port: string with valid port name
+### address: 1<= x<= 256
+### returns the present value and the set value of a specified novus 
 def read_sv_pv(port, address):
     instrument = get_instrument(port, address)
     sv = instrument.read_register(0, 0, signed=True)/10.
@@ -153,17 +173,21 @@ def read_sv_pv(port, address):
     return sv, pv
 
 
-
+### def set_sv(value, port, address) -> Boolean 
+### value: 20 <= x <= 60
+### port: string with valid port name
+### address: 1<= x<= 256
+### sets the value of the novus to a specified temperature 
 def set_sv(value, port, address):
     instrument = get_instrument(port, address)
     instrument.write_register(0, value, 1, signed=True)
     return True
 
-
+# Class for Client Object
 class Client(object):
     def __init__(self):
         """Client object which contains the GUI, logic and state of the temperature boxes
-        The main thread is the window and interaction. Another thread controls the running of the protocols, querying of boxes an dwriting of data
+        The main thread is the window and interaction. Another thread controls the running of the protocols, querying of boxes and writing of data
 
         The settings are read from file and written on closing. The GUI is generated from the settings.
 
@@ -205,7 +229,7 @@ class Client(object):
             ibox (int): Box index
 
         Returns:
-            list: List of strings descriping the protocol
+            list: List of strings describing the protocol
         """
         box = self.settings['boxes'][ibox]
         return ["{step}: {temperature:0.2f} C for {time:0.2f} h".format(**p) for p in box['protocol']]
@@ -231,10 +255,12 @@ class Client(object):
         box = self.settings['boxes'][i]
         box['port'] = values[event]
 
+
     def update_address(self, event, values):
         i = extract_i(event)
         box = self.settings['boxes'][i]
         box['address'] = values[event]
+
 
     def clear_protocol(self, event:str) -> None:
         """Clear the protocol of a box
@@ -263,7 +289,6 @@ class Client(object):
             'filepath': os.path.join(self.settings['data_directory'], basename+'.csv')})
         self.set_disabled(i, True, exceptions=[f'stop-{i}'])
         box['state']['status'] = 'starting'
-
 
 
     def set_disabled(self, i:int, disabled:bool, exceptions:list=[]) -> None:
@@ -298,7 +323,6 @@ class Client(object):
         self.set_disabled(i, False)
         box['state']['status'] = 'stopped'
         self.window[f'status-{i}'].update('Status: stopped')
-
 
 
     def update_boxes(self) -> None:
@@ -340,10 +364,12 @@ class Client(object):
                 'pv':pv,
                 'sv':sv})
 
+
         def write_datapoint(box:dict) -> None:
             # write data to file
             with open(box['state']['filepath'],'a') as f:
                 f.write('{timestamp}, {time_elapsed}, {pv:.2f}, {sv:.2f}\n'.format(**box['state']))
+
             
         def update_status_gui(box:dict) -> None:
             # update GUI
@@ -388,6 +414,7 @@ PV: {pv:.2f}
                     print('Error in update loop '+str(e))
 
                 time.sleep(self.settings['sleep'])
+
 
     def make_window(self) -> sg.Window:
         self.layout = []
@@ -441,11 +468,13 @@ PV: {pv:.2f}
 
         return sg.Window("Cyclikal Temperature Box Controller", self.layout, resizable=True, icon='./cyclikal_light_icon.ico')
 
+
     def run(self) -> None:
         """The main event loop for the GUI
         """
         threading.Thread(target=self.update_boxes, daemon=True).start()
-        while True:  # Event Loop
+        window_open = True
+        while window_open:  # Event Loop
             event, values = self.window.read()
             if event:
                 if event.startswith('add-'):
@@ -469,10 +498,12 @@ PV: {pv:.2f}
             if event == sg.WIN_CLOSED or event == 'Exit':
                 with open('settings.json','w') as f:
                     json.dump(self.settings, f, sort_keys=True, indent=4)
-                break
+                window_open = False
+
 
     def close(self) -> None:
         self.window.close()
+
 
 def main():
     try:
@@ -482,6 +513,7 @@ def main():
         print("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         print("Execution Interrupted From Console")
         my_client.close()
+        
 
 if __name__ == "__main__":
     main()
