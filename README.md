@@ -6,7 +6,7 @@
 ![Language](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
 
 # Cyclikal Temperature-Box-Controller
-This is a GUI for controling <a href="https://cyclikal.com/">Cyclikal</a> Temperature Boxes and logging their temperatures.
+This is a GUI for controlling <a href="https://cyclikal.com/">Cyclikal</a> Temperature Boxes and logging their temperatures.
 
 # Installation
 Install requirements.
