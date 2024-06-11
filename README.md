@@ -48,7 +48,7 @@ A basic settings file for two boxes would look like this:
 ```
 
 Note that the `"protocol"` and the `"state"` will be populated by the application upon running. The `"address"` and the `"port"` can be changed in the GUI.
-The application should work whether the boxes are connected by USB or RS485. The `"address"` parameter is the address set on the physical PID controller (Novus N1050).
+The application should work whether the boxes are connected by USB or RS485. The `"address"` parameter is the address set on the physical PID controller (Novus N1050). For RS485 communications the application assumes the controllers are set to a baudrate of 9600 and a parity of `None`.
 
 # Usage
 The application is launched by running the gui.py file in the `temperaturebox` folder:
@@ -58,6 +58,11 @@ python gui.py
 ```
 
 The GUI provides a simple way to designate set temperatures and times for your Cyclikal temperature boxes and having the data logged in a simple CSV file.
+
+# Common Gotchas
+- The communication with the boxes fails due to the controllers not being set to baud 9.6 and Prty NONE. This can be changed on the physical PID controller (Novus 1050).
+- The data does not get logged because the directory specified in the settings file does not exist.
+- Getting a splash screen for paying for PySimpleGUI. This is solved by installing the last open version as specified in the `requirements.txt` file.
 
 # Contributing 
 Pull requests and bug reports are welcome.
