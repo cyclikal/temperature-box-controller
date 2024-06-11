@@ -48,6 +48,7 @@ A basic settings file for two boxes would look like this:
 ```
 
 Note that the `"protocol"` and the `"state"` will be populated by the application upon running. The `"address"` and the `"port"` can be changed in the GUI.
+The application should work whether the boxes are connected by USB or RS485. The `"address"` parameter is the address set on the physical PID controller (Novus N1050).
 
 # Usage
 The application is launched by running the gui.py file in the `temperaturebox` folder:
