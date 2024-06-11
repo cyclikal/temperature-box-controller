@@ -1,6 +1,7 @@
 {
     "data_directory":"./data",
     "read_delta":60,
+    "sleep": 1.0,
     "boxes": [
         {
             "address": 1,

@@ -1,4 +1,4 @@
-<img src="https://media.licdn.com/dms/image/C4D0BAQFwxfZMEa1yWw/company-logo_200_200/0/1613624395995?e=2147483647&v=beta&t=mPyrVVGwUXIrqHhJVrB2Jk_ncw70xMmr4moOpTnjlu4"  width="500" height="500" class = "center">  
+<img src="https://media.licdn.com/dms/image/C4D0BAQFwxfZMEa1yWw/company-logo_200_200/0/1613624395995?e=2147483647&v=beta&t=mPyrVVGwUXIrqHhJVrB2Jk_ncw70xMmr4moOpTnjlu4"  width="200" height="200" class = "center">  
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/Cyclikal/temperature-box-controller)
 ![Website Status](https://img.shields.io/website-up-down-green-red/http/cyclikal.com.svg)  
@@ -6,29 +6,64 @@
 ![Language](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
 
 # Cyclikal Temperature-Box-Controller
-This is a GUI for overseeing <a href="https://cyclikal.com/">Cyclikal</a> Temperature Boxes to controll their temperatures and analyze their data!
+This is a GUI for controling <a href="https://cyclikal.com/">Cyclikal</a> Temperature Boxes and logging their temperatures.
 
 # Installation
-Download pySerial and Minimal Modbus from your terminal window 
+Install requirements.
 ```bash 
-pip install pyserial
+pip install -r requirements.txt
 ```   
 
-```bash 
-pip install -U minimalmodbus
+This will install `pyserial`, `minimalmodbus`, and the last open version of `pySimpleGUI`.
+
+The `settings.json` file controls the behavior of the application, including:
+- The number of panels in the GUI (`"boxes"`)
+- The directory where the data is logged (`"data_directory"`). Note that if this directory must already exist.
+- The minimum amount of time in seconds between logged datapoints (`"read_delta"`)
+- The sleep time in seconds between checking the boxes (`"sleep"`)
+
+A basic settings file for two boxes would look like this:
+```json
+{
+    "data_directory":"./data",
+    "read_delta":60,
+    "sleep": 1.0,
+    "boxes": [
+        {
+            "address": 1,
+            "port": "COM6",
+            "name": "Box 1",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        },
+        {
+            "address": 2,
+            "port": "COM7",
+            "name": "Box 2",
+            "protocol":[],
+            "state":{"status":"unknown"}
+        }
+    ]
+}
 ```
-Then run the gui.py file found in this repo!
+
+Note that the `"protocol"` and the `"state"` will be populated by the application upon running. The `"address"` and the `"port"` can be changed in the GUI.
+
 # Usage
-This gui provides a simple way to designate temperatures and amounts of time for your Cyclikal boxes to cycle at. It can also read the current temperature of the box and the set temperature. If you would like to write your own program, make sure to check out the <a href="https://minimalmodbus.readthedocs.io/en/stable/readme.html">Minimal Modbus Documentation</a>!
+The application is launched by running the gui.py file in the `temperaturebox` folder:
+
+```bash
+python gui.py
+```
+
+The GUI provides a simple way to designate set temperatures and times for your Cyclikal temperature boxes and having the data logged in a simple CSV file.
 
 # Contributing 
-1. Report bugs! If you run into any bugs let us know :)  
-2. Suggestions, let us know of any improvements we can make!  
-3. Pull requests are welcomed in seperate branches. For major changes or ideas, please open an issue to discuss what you would like changed!
+Pull requests and bug reports are welcome.
 
 # Licensing
 MIT License
 
-Copyright (c) 2022 Cyclikal, LLC
+Copyright (c) 2024 Cyclikal, LLC
 
 
